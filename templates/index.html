@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <script src="https://code.jquery.com/jquery-2.2.4.min.js" ></script>
+
+    <style>
+    html,body {
+      margin:0;
+      padding:0;
+      font-family:Arial;
+      font-size:10px;
+    }
+    body {
+      padding: 20px 45px;
+    }
+    </style>
+  </head>
+  <body>
+      <form id="predict" method="POST" Action="/get_predictions" >
+        <p>Enter Product Id</p>
+        <label><input type="text" name="input_product" value="HBV00000L4ICT"> </label>
+		<input id="fs-submit-button" value="Predict" type="submit" class="fs-submit"></input>
+
+        <br><br>
+    </form>
+	
+
+    <hr>
+    <div id="predictionOutcome"></div>
+
+    <script>
+	
+
+
+		
+	$(document).on('ready', function () {
+		console.log("hello3")
+		
+		$(".fs-submit").click(function(e) {
+				console.log("hello4")
+
+		$('form#predict').submit(function(event){
+			console.log("Hello5")
+
+        event.preventDefault();
+		//event.returnValue = false;
+          
+		  var allElements=event.target.elements;
+		  
+		  
+
+          var json={
+            "productid":allElements.input_product.value  
+          }
+		  
+
+          var jsonStr=JSON.stringify(json)
+          console.log(jsonStr)
+		  
+          $.ajax({
+            url: "/get_predictions",
+            data: JSON.parse(jsonStr),
+            method: "GET",
+            success: function(result) {
+                let predictedResult=result;
+                let htmlStr="";
+				htmlStr = result
+                //$("predictionOutcome").html("adssasdadsad");
+				//document.getElementById('predictionOutcome').innerHTML=htmlStr;
+				var outcome = htmlStr
+				
+				predictionOutcome.innerHTML  = JSON.stringify(outcome);
+				
+				
+				console.log(htmlStr)
+				
+				
+            },
+            error: function(err) {
+              console.log(err);
+            }
+			
+		});
+          });
+		  
+		  });
+
+          return false
+      });
+    </script>
+  </body>
+</html>
